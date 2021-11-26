@@ -203,16 +203,16 @@ void call() {
                 }
             }
 
-            stage('Документирование')
-            parallel {
-                stage('Swagger') {
-                    agent {
-                        label 'oscript'
-                    }
-                    steps {
-                        //transform config
-                        def swagger = new Swagger(config)
-                        swagger.run()
+            stage('Документирование'){
+                parallel {
+                    stage('Swagger') {
+                        agent {
+                            label 'oscript'
+                        }
+                        steps {
+                            def swagger = new Swagger(config)
+                            swagger.run()
+                        }
                     }
                 }
             }
