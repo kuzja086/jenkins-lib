@@ -32,7 +32,7 @@ class Swagger {
 
         String SRC_PATH =  new File("$env.WORKSPACE/$config.srcDir").getCanonicalPath()
 
-        steps.cmd("swagger generate --src-path $SRC_PATH --out $OUT")
+        steps.cmd("oscript_modules/bin/swagger generate --src-path $SRC_PATH --out $OUT")
 
         steps.archiveArtifacts(OUT)
     }
