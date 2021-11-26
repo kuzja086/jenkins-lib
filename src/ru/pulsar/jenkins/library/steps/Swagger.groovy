@@ -30,7 +30,7 @@ class Swagger {
 
         steps.installLocalDependencies()
 
-        String SRC_PATH = config.srcDir
+        String SRC_PATH =  new File("$env.WORKSPACE/$config.srcDir").getCanonicalPath()
 
         steps.cmd("swagger generate --src_path $SRC_PATH --out $OUT")
 
