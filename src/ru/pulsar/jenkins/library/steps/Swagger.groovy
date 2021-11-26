@@ -2,7 +2,6 @@ package ru.pulsar.jenkins.library.steps
 
 import ru.pulsar.jenkins.library.IStepExecutor
 import ru.pulsar.jenkins.library.configuration.JobConfiguration
-import ru.pulsar.jenkins.library.configuration.SourceFormat
 import ru.pulsar.jenkins.library.ioc.ContextRegistry
 import ru.pulsar.jenkins.library.utils.Logger
 
@@ -28,6 +27,8 @@ class Swagger {
             Logger.println("Swagger documentation is disabled")
             return
         }
+
+        steps.installLocalDependencies()
 
         String SRC_PATH = "$env.WORKSPACE"
 
