@@ -210,8 +210,10 @@ void call() {
                             label 'oscript'
                         }
                         steps {
-                            def swagger = new Swagger(config)
-                            swagger.run()
+                            script {
+                                def swagger = new Swagger(config)
+                                swagger.run()
+                            }
                         }
                     }
                 }
