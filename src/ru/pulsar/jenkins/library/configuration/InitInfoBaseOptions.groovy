@@ -14,9 +14,10 @@ class InitInfoBaseOptions implements Serializable {
 
     @JsonPropertyDescription("""
     Способ инициализации конфигурации информационной базы.
-    Поддерживается три варианта:
+    Поддерживается четыре варианта:
         * fromStorage - инициализация информационной базы из хранилища конфигурации;
         * fromSource - инициализация информационной базы из исходников конфигурации;
+        * fromDT - Инициализация проведена в загружаемом файле DT;
         * defaultBranchFromStorage - инициализация основной ветки из хранилища конфигурации, остальных - из исходников конфигурации.
     По умолчанию содержит значение "fromStorage".""")
     InitInfoBaseMethod initMethod = InitInfoBaseMethod.FROM_STORAGE;

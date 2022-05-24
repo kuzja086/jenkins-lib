@@ -10,6 +10,9 @@ enum InitInfoBaseMethod {
     @JsonProperty("fromSource")
     FROM_SOURCE,
 
+    @JsonProperty("fromDT")
+    FROM_DT
+
     @JsonProperty("defaultBranchFromStorage")
     DEFAULT_BRANCH_FROM_STORAGE
 

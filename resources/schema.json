@@ -30,7 +30,7 @@
       "properties" : {
         "storagePath" : {
           "type" : "string",
-          "description" : "Ид секрета Jenkins, хранящего путь к хранилищу конфигурации"
+          "description" : "Путь к хранилищу конфигурации"
         },
         "storage" : {
           "type" : "string",
@@ -141,10 +141,14 @@
       "id" : "urn:jsonschema:ru:pulsar:jenkins:library:configuration:InitInfoBaseOptions",
       "description" : "Настройки шага инициализации ИБ",
       "properties" : {
+        "preloadDTURL" : {
+          "type" : "string",
+          "description" : "\n    Путь к выгрузке информационной базы в формате DT, которая должна быть загружена в самом начале инициализации.\n    По умолчанию не заполнено"
+        },
         "initMethod" : {
           "type" : "string",
-          "description" : "\n    Способ инициализации информационной базы.\n    Поддерживается три варианта:\n        * fromStorage - инициализация информационной базы из хранилища конфигурации;\n        * fromSource - инициализация информационной базы из исходников конфигурации;\n        * defaultBranchFromStorage - инициализация основной ветки из хранилища конфигурации, остальных - из исходников конфигурации.\n    По умолчанию содержит значение \"fromStorage\".",
-          "enum" : [ "fromStorage", "fromSource", "defaultBranchFromStorage" ]
+          "description" : "\n    Способ инициализации конфигурации информационной базы.\n    Поддерживается четыре варианта:\n        * fromStorage - инициализация информационной базы из хранилища конфигурации;\n        * fromSource - инициализация информационной базы из исходников конфигурации;\n        * fromDT - Инициализация проведена в загружаемом файле DT;\n        * defaultBranchFromStorage - инициализация основной ветки из хранилища конфигурации, остальных - из исходников конфигурации.\n    По умолчанию содержит значение \"fromStorage\".",
+          "enum" : [ "fromStorage", "fromSource", "fromDT" ]
         },
         "runMigration" : {
           "type" : "boolean",
