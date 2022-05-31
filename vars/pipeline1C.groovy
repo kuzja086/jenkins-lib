@@ -255,7 +255,7 @@ void call() {
 
         post('post-stage') {
             always {
-                node('agent') {
+                node('master') {
                     saveResults config
                     sendNotifications(config)
                 }
