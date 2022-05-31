@@ -41,7 +41,9 @@ class CreateInfoBase implements Serializable {
             Logger.println("Скачивание DT в $localPathToPreloadDT")
             localPathToPreloadDT.copyFrom(new URL(preloadDTURL))
 
-            String command = vrunnerPath + " init-dev --dt $localPathToPreloadDT"
+            String base = config.baseName()
+
+            String command = vrunnerPath + " init-dev --dt $localPathToPreloadDT --ibconnection \"$base\""
             if (steps.fileExists(vrunnerSettings)) {
                 command += " --settings $vrunnerSettings"
             }
