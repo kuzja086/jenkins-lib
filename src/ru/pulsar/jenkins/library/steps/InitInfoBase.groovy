@@ -44,6 +44,11 @@ class InitInfoBase implements Serializable {
                 String base = config.baseName()
                 command += ' --ibconnection "$base"'
 
+                String vrunnerSettings = config.initInfoBaseOptions.vrunnerSettings
+                if (steps.fileExists(vrunnerSettings)) {
+                    command += " --settings $vrunnerSettings"
+                }
+
                 // Запуск миграции
                 steps.catchError {
                     VRunner.exec(command)
