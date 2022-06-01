@@ -60,7 +60,7 @@ class EdtValidate implements Serializable {
         steps.archiveArtifacts("$DesignerToEdtFormatTransformation.WORKSPACE/.metadata/.log")
         steps.archiveArtifacts(RESULT_FILE)
         steps.stash(RESULT_STASH, RESULT_FILE)
-        boolean succsessfullDeleted = new File(RESULT_FILE).delete()
+        boolean succsessfullDeleted = new File(resultFile).delete()
         Logger.println(RESULT_FILE)
         if (succsessfullDeleted){
             Logger.println("$RESULT_FILE успешно удален")
