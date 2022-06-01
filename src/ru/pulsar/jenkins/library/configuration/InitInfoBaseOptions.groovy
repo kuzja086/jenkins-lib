@@ -45,7 +45,6 @@ class InitInfoBaseOptions implements Serializable {
             ", runMigration=" + runMigration +
             ", vrunnerSettings=" + vrunnerSettings +
             ", additionalInitializationSteps=" + additionalInitializationSteps +
-            ", vrunnerSettings=" + vrunnerSettings +
             '}';
     }
 }

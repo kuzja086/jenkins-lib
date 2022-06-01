@@ -43,7 +43,7 @@ class CreateInfoBase implements Serializable {
 
             String base = config.baseName()
 
-            String command = vrunnerPath + " init-dev --dt $localPathToPreloadDT --ibconnection \"$base\""
+            String command = vrunnerPath + " update-dev --dt $localPathToPreloadDT --ibconnection \"$base\""
             if (steps.fileExists(vrunnerSettings)) {
                 command += " --settings $vrunnerSettings"
             }
