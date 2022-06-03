@@ -119,7 +119,7 @@ class JobConfiguration implements Serializable {
     String baseName(){
         String base = basePath
         if (basePath == '') {
-            base = "/F./build.ib"
+            base = "/F./build/ib"
         }
 
         return base
