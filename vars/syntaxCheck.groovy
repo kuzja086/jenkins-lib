@@ -21,14 +21,16 @@ def call(JobConfiguration config) {
 
     installLocalDependencies()
 
-    unzipInfobase()
+    if (config.basePath != '') {
+        unzipInfobase()
+    }
 
     FilePath pathToJUnitReport = FileUtils.getFilePath("$env.WORKSPACE/$options.pathToJUnitReport")
 
     String outPath = pathToJUnitReport.getParent()
     createDir(outPath)
 
-    String vrunnerPath = VRunner.getVRunnerPath();
+    String vrunnerPath = VRunner.getVRunnerPath()
     String base = config.baseName()
     String command = "$vrunnerPath syntax-check --ibconnection \"$base\""
 
@@ -40,11 +42,11 @@ def call(JobConfiguration config) {
         command += ' --groupbymetadata'
     }
 
-    command += " --junitpath $pathToJUnitReport";
+    command += " --junitpath $pathToJUnitReport"
 
     FilePath vrunnerSettings = FileUtils.getFilePath("$env.WORKSPACE/$options.vrunnerSettings")
     if (vrunnerSettings.exists()) {
-        command += " --settings $vrunnerSettings";
+        command += " --settings $vrunnerSettings"
     }
 
     if (!options.exceptionFile.empty && fileExists(options.exceptionFile)) {

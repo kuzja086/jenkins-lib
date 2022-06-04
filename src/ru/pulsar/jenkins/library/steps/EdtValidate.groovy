@@ -29,6 +29,8 @@ class EdtValidate implements Serializable {
             return
         }
 
+        fileOperations([fileDeleteOperation(includes: RESULT_FILE)])
+
         def env = steps.env()
 
         String workspaceLocation = "$env.WORKSPACE/$DesignerToEdtFormatTransformation.WORKSPACE"
