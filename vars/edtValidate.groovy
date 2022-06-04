@@ -5,5 +5,6 @@ import ru.pulsar.jenkins.library.steps.EdtValidate
 def call(JobConfiguration config) {
     ContextRegistry.registerDefaultContext(this)
     def edtValidate = new EdtValidate(config)
+    fileOperations([fileDeleteOperation(includes: edtValidate.RESULT_FILE)])
     edtValidate.run()
 }
