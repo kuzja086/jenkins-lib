@@ -21,7 +21,7 @@ def call(JobConfiguration config) {
 
     installLocalDependencies()
 
-    if (config.basePath != '') {
+    if (config.basePath == '') {
         unzipInfobase()
     }
 
