@@ -68,7 +68,7 @@ class Yaxunit implements Serializable {
         }
 
         String yaxunitConfigPath = options.configPath
-        File yaxunitConfigFile = new File(yaxunitConfigPath)
+        File yaxunitConfigFile = new File("$env.WORKSPACE/$yaxunitConfigPath")
         if (!steps.fileExists(yaxunitConfigPath)) {
             def defaultYaxunitConfig = steps.libraryResource DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE
             yaxunitConfigFile.write defaultYaxunitConfig
@@ -101,7 +101,7 @@ class Yaxunit implements Serializable {
         }
 
         // Сохраняем результаты
-        String junitReport = "build/out/yaxunit/junit.xml"
+        String junitReport = "./build/out/yaxunit/junit.xml"
         FilePath pathToJUnitReport = FileUtils.getFilePath("$env.WORKSPACE/$junitReport")
         String junitReportDir = FileUtils.getLocalPath(pathToJUnitReport.getParent())
 
