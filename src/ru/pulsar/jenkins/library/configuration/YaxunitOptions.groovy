@@ -18,7 +18,7 @@ class YaxunitOptions implements Serializable {
     String cfe = "https://github.com/bia-technologies/yaxunit/releases/download/23.05/YAXUNIT-23.05.cfe"
 
     @JsonPropertyDescription("""Имена расширений с тестами.
-    По умолчанию указано YAXUNIT.
+    По умолчанию содержит один элемент - YAXUNIT.
     """)
     String[] extensionNames = ['YAXUNIT']
 
