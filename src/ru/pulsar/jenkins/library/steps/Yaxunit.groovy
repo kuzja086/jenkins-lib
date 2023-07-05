@@ -39,7 +39,7 @@ class Yaxunit implements Serializable {
         def env = steps.env()
 
         String vrunnerPath = VRunner.getVRunnerPath()
-        String ibConnection = "--ibconnection /F./build/ib"
+        String ibConnection = ' --ibconnection "/F./build/ib"'
 
         // Скачиваем расширение
         String pathToYaxunit = "$env.WORKSPACE/$yaxunitPath"
@@ -48,7 +48,14 @@ class Yaxunit implements Serializable {
         localPathToYaxunit.copyFrom(new URL(options.cfe))
 
         // Команда загрузки YAXUnit
-        String loadYaxunitCommand = vrunnerPath + ' run --command "Путь=' + pathToYaxunit + ';ЗавершитьРаботуСистемы" --execute $runnerRoot/epf/ЗагрузитьРасширениеВРежимеПредприятия.epf ' + ibConnection
+        String loadYaxunitCommand = vrunnerPath + ' run --command "Путь=' + pathToYaxunit + ';ЗавершитьРаботуСистемы;" --execute '
+        String executeParameter = '$runnerRoot/epf/ЗагрузитьРасширениеВРежимеПредприятия.epf'
+        if (steps.isUnix()) {
+            executeParameter = '\\' + executeParameter
+        }
+        loadYaxunitCommand += executeParameter;
+        loadYaxunitCommand += ' --ibconnection "/F./build/ib"'
+
 
         // Команда сборки расширений с тестами и их загрузки в ИБ
         String[] loadTestExtCommands = []
