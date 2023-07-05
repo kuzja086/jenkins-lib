@@ -58,7 +58,7 @@ class Yaxunit implements Serializable {
 
 
         // Команда сборки расширений с тестами и их загрузки в ИБ
-        String[] loadTestExtCommands = []
+        def loadTestExtCommands = []
         for (String extension in options.extensionNames) {
             if (extension == "YAXUNIT") {
                 continue
