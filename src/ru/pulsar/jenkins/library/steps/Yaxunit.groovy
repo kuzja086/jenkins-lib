@@ -53,7 +53,7 @@ class Yaxunit implements Serializable {
         if (steps.isUnix()) {
             executeParameter = '\\' + executeParameter
         }
-        loadYaxunitCommand += executeParameter;
+        loadYaxunitCommand += executeParameter
         loadYaxunitCommand += ' --ibconnection "/F./build/ib"'
 
 
@@ -101,8 +101,11 @@ class Yaxunit implements Serializable {
         }
 
         // Сохраняем результаты
+        String junitReport = "build/out/yaxunit/junit.xml"
+        FilePath pathToJUnitReport = FileUtils.getFilePath("$env.WORKSPACE/$junitReport")
+        String junitReportDir = FileUtils.getLocalPath(pathToJUnitReport.getParent())
+
         steps.junit("$junitReportDir/*.xml", true)
         steps.archiveArtifacts("$junitReportDir/**")
-
     }
 }

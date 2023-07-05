@@ -1,5 +1,5 @@
 {
-  "reportPath": "/build/out/yaxunit/junit.xml",
+  "reportPath": "./build/out/yaxunit/junit.xml",
   "closeAfterTests": true,
   "filter": {
     "extensions": [
@@ -18,9 +18,9 @@
   "reportFormat": "jUnit",
   "showReport": false,
   "logging": {
-    "file": "/build/out/yaxunit/log.txt",
+    "file": "./build/out/yaxunit/log.txt",
     "enable": false,
     "level": "debug"
   },
-  "exitCode": "/build/out/yaxunit/result.txt"
+  "exitCode": "./build/out/yaxunit/result.txt"
 }
