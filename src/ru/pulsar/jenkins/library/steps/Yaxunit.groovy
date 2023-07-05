@@ -56,7 +56,6 @@ class Yaxunit implements Serializable {
         loadYaxunitCommand += executeParameter
         loadYaxunitCommand += ' --ibconnection "/F./build/ib"'
 
-
         // Команда сборки расширений с тестами и их загрузки в ИБ
         def loadTestExtCommands = []
         for (String extension in options.extensionNames) {
@@ -69,12 +68,12 @@ class Yaxunit implements Serializable {
         }
 
         String yaxunitConfigPath = options.configPath
+        File yaxunitConfigFile = new File(yaxunitConfigPath)
         if (!steps.fileExists(yaxunitConfigPath)) {
             def defaultYaxunitConfig = steps.libraryResource DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE
-            File yaxunitConfigFile = new File(yaxunitConfigPath)
             yaxunitConfigFile.write defaultYaxunitConfig
-            yaxunitConfig = yaxunitConfigFile.getCanonicalPath()
         }
+        def yaxunitConfig = yaxunitConfigFile.getCanonicalPath()
 
         // Команда запуска тестов
         String command = "$vrunnerPath run --command RunUnitTests=$yaxunitConfig $ibConnection"
