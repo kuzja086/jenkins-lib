@@ -8,13 +8,13 @@ import ru.pulsar.jenkins.library.utils.FileUtils
 import ru.pulsar.jenkins.library.utils.Logger
 import ru.pulsar.jenkins.library.utils.VRunner
 
-import java.nio.file.Files
-
 class Yaxunit implements Serializable {
 
     private final JobConfiguration config
 
     private final String yaxunitPath = 'build/yaxunit.cfe'
+
+    private final String DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE = 'yaxunit.json'
 
     Yaxunit(JobConfiguration config) {
         this.config = config
@@ -41,52 +41,55 @@ class Yaxunit implements Serializable {
         String vrunnerPath = VRunner.getVRunnerPath()
         String ibConnection = "--ibconnection /F./build/ib"
 
-        // Скачиваем расширение с гитхаба
+        // Скачиваем расширение
         String pathToYaxunit = "$env.WORKSPACE/$yaxunitPath"
         FilePath localPathToYaxunit = FileUtils.getFilePath(pathToYaxunit)
         Logger.println("Скачивание Yaxunit в $localPathToYaxunit")
-        localPathToYaxunit.copyFrom(new URL('https://github.com/bia-technologies/yaxunit/releases/download/22.11.0/YAXUNIT-22.11.cfe'))
+        localPathToYaxunit.copyFrom(new URL(options.cfe))
 
-        // Устанавливаем расширение
-//        String loadYaxunitCommand = "$vrunnerPath loadext -f $localPathToYaxunit --extension Yaxunit --updatedb $ibConnection"
+        // Команда загрузки YAXUnit
         String loadYaxunitCommand = vrunnerPath + ' run --command "Путь=' + pathToYaxunit + ';ЗавершитьРаботуСистемы" --execute $runnerRoot/epf/ЗагрузитьРасширениеВРежимеПредприятия.epf ' + ibConnection
-        // Устанавливаем тесты
-        String loadTestsCommand = "$vrunnerPath  compileext ./src/cfe test --updatedb $ibConnection"
 
-        // Создаем конфиг, т.к. в репо может быть ключ, который не закрывает программу и может повесить конвеер
-        // Также путь к отчету в формате junit указывается в конфиге, т.к. мы не знаем на чем стартует агент,
-        // поэтому собираем сами. Стоит вынести в отдельный класс
-        String junitReport = "build/out/jUnit/yaxunit/yaxunit.xml"
-        FilePath pathToJUnitReport = FileUtils.getFilePath("$env.WORKSPACE/$junitReport")
-        String junitReportDir = FileUtils.getLocalPath(pathToJUnitReport.getParent())
-        String configYaxunit = "test-config.json"
-        FilePath pathToConfig = FileUtils.getFilePath("$env.WORKSPACE/$configYaxunit")
-//        def data = [
-//                'filter' : 'test',
-//                'reportPath' : 'ss'
-//        ]
-//        String data = "{\"filter\": {\"extensions\": [\"test\"]}, \"reportPath\": \"$pathToConfig\"}"
-//        def json = new groovy.json.JsonBuilder()
-//        json "filter" : "jj", "reportPath" : "ii"
-//        def file = new File("$env.WORKSPACE\\$configYaxunit")
-//        file.createNewFile()
-//        file.write(groovy.json.JsonOutput.prettyPrint(json.toString()))
+        // Команда сборки расширений с тестами и их загрузки в ИБ
+        String[] loadTestExtCommands = []
+        for (String extension in options.extensionNames) {
+            if (extension == "YAXUNIT") {
+                continue
+            }
+            def loadTestExtCommand = "$vrunnerPath compileext ./src/cfe/$extension $extension --updatedb $ibConnection"
+            loadTestExtCommands << loadTestExtCommand
+            Logger.println("Команда сборки расширения: $loadTestExtCommands")
+        }
 
-        // Запускаем тесты
-        String command = "$vrunnerPath run --command RunUnitTests=$pathToConfig $ibConnection"
+        String yaxunitConfig = options.configPath
+        if (!steps.fileExists(yaxunitConfig)) {
+            def globalConfig = steps.libraryResource DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE
+            globalConfig.save("./build/yaxunit.json")
+            yaxunitConfig = "./build/yaxunit.json"
+        }
 
+        // Команда запуска тестов
+        String command = "$vrunnerPath run --command RunUnitTests=$yaxunitConfig $ibConnection"
+
+        // Переопределяем настройки vrunner
         String vrunnerSettings = options.vrunnerSettings
+        String[] loadTestExtCommandJoined = loadTestExtCommands
         if (steps.fileExists(vrunnerSettings)) {
             String vrunnerSettingsCommand = " --settings $vrunnerSettings"
 
-            command += vrunnerSettingsCommand
             loadYaxunitCommand += vrunnerSettingsCommand
-            loadTestsCommand += vrunnerSettingsCommand
+
+            loadTestExtCommandJoined = loadTestExtCommands.collect { "$it $vrunnerSettingsCommand" }
+            command += vrunnerSettingsCommand
+
         }
 
+        // Выполяем команды
         steps.withEnv(logosConfig) {
             VRunner.exec(loadYaxunitCommand, true)
-            VRunner.exec(loadTestsCommand, true)
+            for (loadTestExtCommand in loadTestExtCommandJoined) {
+                VRunner.exec(loadTestExtCommand, true)
+            }
             VRunner.exec(command, true)
         }
 

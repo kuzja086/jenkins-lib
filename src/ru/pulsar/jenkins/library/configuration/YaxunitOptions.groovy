@@ -17,10 +17,10 @@ class YaxunitOptions implements Serializable {
     """)
     String cfe = "https://github.com/bia-technologies/yaxunit/releases/download/23.05/YAXUNIT-23.05.cfe"
 
-    @JsonPropertyDescription("""Относительный путь к каталогу расширения с тестами.
-    По умолчанию не заполнено.
+    @JsonPropertyDescription("""Имена расширений с тестами.
+    По умолчанию указано YAXUNIT.
     """)
-    String extensionName = ""
+    String[] extensionNames = ['YAXUNIT']
 
     @JsonPropertyDescription("""Путь к конфигурационному файлу YAXUnit.
     По умолчанию содержит значение "./tools/yaxunit.json".
@@ -33,7 +33,7 @@ class YaxunitOptions implements Serializable {
         return "YaxunitTestOptions{" +
             "vrunnerSettings='" + vrunnerSettings + '\'' +
             ", cfe='" + cfe +
-            ", extensionName='" + extensionName +
+            ", extensionNames='" + extensionNames.toString() +
             ", configPath='" + configPath +
             '}'
     }
