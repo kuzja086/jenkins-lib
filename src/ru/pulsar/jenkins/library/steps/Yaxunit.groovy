@@ -110,10 +110,6 @@ class Yaxunit implements Serializable {
         steps.junit("$junitReportDir/*.xml", true)
         steps.archiveArtifacts("$junitReportDir/**")
 
-        String allureReport = "build/out/allure/yaxunit/allure.xml"
-        FilePath pathToAllureReport = FileUtils.getFilePath("$env.WORKSPACE/$allureReport")
-        String allureReportDir = FileUtils.getLocalPath(pathToAllureReport.getParent())
-        steps.stash(YAXUNIT_ALLURE_STASH, "$allureReportDir/**", true)
-        steps.archiveArtifacts("$allureReportDir/**")
+        steps.stash(YAXUNIT_ALLURE_STASH, "$junitReportDir/**", true)
     }
 }
