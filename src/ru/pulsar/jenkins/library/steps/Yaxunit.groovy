@@ -68,11 +68,12 @@ class Yaxunit implements Serializable {
             Logger.println("Команда сборки расширения: $loadTestExtCommands")
         }
 
-        String yaxunitConfig = options.configPath
-        if (!steps.fileExists(yaxunitConfig)) {
-            def globalConfig = steps.libraryResource DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE
-            globalConfig.save("./build/yaxunit.json")
-            yaxunitConfig = "./build/yaxunit.json"
+        String yaxunitConfigPath = options.configPath
+        if (!steps.fileExists(yaxunitConfigPath)) {
+            def defaultYaxunitConfig = steps.libraryResource DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE
+            File yaxunitConfigFile = new File(yaxunitConfigPath)
+            yaxunitConfigFile.write defaultYaxunitConfig
+            yaxunitConfig = yaxunitConfigFile.getCanonicalPath()
         }
 
         // Команда запуска тестов
