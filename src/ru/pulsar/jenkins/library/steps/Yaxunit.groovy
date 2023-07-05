@@ -16,6 +16,8 @@ class Yaxunit implements Serializable {
 
     private final String DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE = 'yaxunit.json'
 
+    private final String YAXUNIT_ALLURE_STASH = 'yaxunit-allure'
+
     Yaxunit(JobConfiguration config) {
         this.config = config
     }
@@ -107,5 +109,11 @@ class Yaxunit implements Serializable {
 
         steps.junit("$junitReportDir/*.xml", true)
         steps.archiveArtifacts("$junitReportDir/**")
+
+        String allureReport = "build/out/allure/yaxunit/allure.xml"
+        FilePath pathToAllureReport = FileUtils.getFilePath("$env.WORKSPACE/$allureReport")
+        String allureReportDir = FileUtils.getLocalPath(pathToAllureReport.getParent())
+        steps.stash(YAXUNIT_ALLURE_STASH, "$allureReportDir/**", true)
+        steps.archiveArtifacts("$allureReportDir/**")
     }
 }
