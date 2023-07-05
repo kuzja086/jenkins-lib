@@ -27,6 +27,16 @@ class YaxunitOptions implements Serializable {
     """)
     String configPath = "./tools/yaxunit.json"
 
+    @JsonPropertyDescription("""Выполнять публикацию результатов в отчет Allure.
+    По умолчанию выключено.
+    """)
+    boolean publishToAllureReport
+
+    @JsonPropertyDescription("""Выполнять публикацию результатов в отчет JUnit.
+    По умолчанию включено.
+    """)
+    boolean publishToJUnitReport
+
     @Override
     @NonCPS
     String toString() {
