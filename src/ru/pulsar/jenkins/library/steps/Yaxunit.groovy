@@ -16,7 +16,7 @@ class Yaxunit implements Serializable {
 
     private final String DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE = 'yaxunit.json'
 
-    public final String YAXUNIT_ALLURE_STASH = 'yaxunit-allure'
+    public static final String YAXUNIT_ALLURE_STASH = 'yaxunit-allure'
 
     Yaxunit(JobConfiguration config) {
         this.config = config
