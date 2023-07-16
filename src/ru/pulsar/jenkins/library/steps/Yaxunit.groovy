@@ -52,7 +52,7 @@ class Yaxunit implements Serializable {
         for (Extension extension in options.extensions) {
             if (extension.isCFE()) {
                 // Скачиваем расширение
-                String pathToExtension = "$env.WORKSPACE/build/out/$extension.name"
+                String pathToExtension = "$env.WORKSPACE/build/out/${extension.name}.cfe"
                 FilePath localPathToExtension = FileUtils.getFilePath(pathToExtension)
                 Logger.println("Скачивание расширения $extension.name в $localPathToExtension из ${extension.src}")
                 localPathToExtension.copyFrom(new URL(extension.src))

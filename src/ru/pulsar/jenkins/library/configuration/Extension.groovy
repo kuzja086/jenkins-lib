@@ -1,9 +1,7 @@
 package ru.pulsar.jenkins.library.configuration
 
 import com.cloudbees.groovy.cps.NonCPS
-import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Extension implements Serializable {
@@ -17,7 +15,7 @@ class Extension implements Serializable {
     @Override
     @NonCPS
     String toString() {
-        return name;
+        return name
     }
 
 }
