@@ -76,12 +76,11 @@ class Yaxunit implements Serializable {
 
         // Готовим конфиг для yaxunit
         String yaxunitConfigPath = options.configPath
-        File yaxunitConfigFile = new File("$env.WORKSPACE/$yaxunitConfigPath")
         if (!steps.fileExists(yaxunitConfigPath)) {
             def defaultYaxunitConfig = steps.libraryResource DEFAULT_YAXUNIT_CONFIGURATION_RESOURCE
-            yaxunitConfigFile.write defaultYaxunitConfig
+            steps.writeFile(options.configPath, defaultYaxunitConfig, 'UTF-8')
         }
-        def yaxunitConfig = yaxunitConfigFile.getCanonicalPath()
+        def yaxunitConfig = FileUtils.getFilePath(yaxunitConfigPath)
 
         // Команда запуска тестов
         String runTestsCommand = "$vrunnerPath run --command RunUnitTests=$yaxunitConfig $ibConnection"
