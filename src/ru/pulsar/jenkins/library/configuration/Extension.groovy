@@ -8,10 +8,6 @@ class Extension implements Serializable {
     String name
     String src
 
-    boolean isCFE() {
-        return this.src.endsWith("cfe")
-    }
-
     @Override
     @NonCPS
     String toString() {
